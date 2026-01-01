@@ -139,7 +139,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                else { strokeColor = '#60a5fa'; opacity = '0.8'; }
             } else {
                if (nidana.id === 6) strokeColor = '#fca5a5';
-               if (nidana.id === 7) strokeColor = '#ef4444'; // Thọ -> Ái
+               if (nidana.id === 7) strokeColor = '#ef4444'; // Thọ -{'>'} Ái
                if (nidana.id === 8) strokeColor = '#991b1b';
             }
 
@@ -318,15 +318,15 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                     <div className="bg-slate-800 p-2 rounded border-l-2 border-blue-400 space-y-2">
                       <p>Do xúc tập khởi nên thọ tập khởi. Do xúc đoạn diệt nên thọ đoạn diệt. Con đường Thánh đạo Tám ngành là con đường đưa đến thọ đoạn diệt, tức là chánh tri kiến… chánh định. Do duyên thọ khởi lên lạc hỷ nào, đấy là vị ngọt của thọ. Sự vô thường, khổ, biến hoại của thọ là sự nguy hiểm của thọ. Sự nhiếp phục dục và tham (chandaràga) đối với thọ, sự đoạn tận dục và tham là sự xuất ly của thọ.</p>
                       <div className="space-y-1 text-amber-200">
-                        <p>Lạc thọ -> tham tùy miên</p>
-                        <p>Khổ thọ -> sân tùy miên</p>
-                        <p>Xả thọ -> vô minh tùy miên</p>
+                        <p>Lạc thọ -{'>'} tham tùy miên</p>
+                        <p>Khổ thọ -{'>'} sân tùy miên</p>
+                        <p>Xả thọ -{'>'} vô minh tùy miên</p>
                       </div>
                       <p className="text-[10px] text-slate-300">Khổ thân: mũi tên 1 | Khổ tâm: mũi tên 2</p>
                     </div>
 
                     <div className="space-y-1 border-t border-slate-700 pt-2">
-                      <p className="font-bold text-blue-300">Lạc vật chất (Dục lạc): Do 5 dục (Sắc, thanh...) -> Thấp nhất.</p>
+                      <p className="font-bold text-blue-300">Lạc vật chất (Dục lạc): Do 5 dục (Sắc, thanh...) -{'>'} Thấp nhất.</p>
                       <div className="pl-2 space-y-1">
                         <p>Lạc phi vật chất (Thiền định):</p>
                         <p>Sơ thiền (Ly dục).</p>
@@ -334,7 +334,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                         <p>Tam thiền (Xả niệm lạc trú).</p>
                         <p>Tứ thiền (Xả thanh tịnh - Vắng mặt khổ vui).</p>
                       </div>
-                      <p className="font-bold text-emerald-300">Lạc Tối thượng (Giải thoát): Diệt thọ tưởng định & A-la-hán quả -> Sự vắng mặt hoàn toàn của các Hành và Lậu hoặc.</p>
+                      <p className="font-bold text-emerald-300">Lạc Tối thượng (Giải thoát): Diệt thọ tưởng định & A-la-hán quả -{'>'} Sự vắng mặt hoàn toàn của các Hành và Lậu hoặc.</p>
                     </div>
 
                     <p className="text-right text-[10px] opacity-70">Nguồn gốc: do Xúc</p>
@@ -346,15 +346,15 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                   <div className="text-sm font-bold mb-2 text-emerald-300 border-b border-emerald-800 pb-1">🧘 Phương pháp thực hành</div>
                   <div className="text-[11px] space-y-2 leading-relaxed">
                     <div className="space-y-1">
-                      <p>Chánh Niệm + Tỉnh Giác: Luôn hay biết rõ ràng mọi cử động (đi, đứng, nằm, ngồi, co, duỗi...) để kịp thời bắt được Thọ ngay khi nó vừa sinh khởi. -> biết được Thọ ấy khởi lên -> Thọ ấy có duyên (để khởi lên) do thân/xúc -> 3 bước quán ở dưới</p>
+                      <p>Chánh Niệm + Tỉnh Giác: Luôn hay biết rõ ràng mọi cử động (đi, đứng, nằm, ngồi, co, duỗi...) để kịp thời bắt được Thọ ngay khi nó vừa sinh khởi. -{'>'} biết được Thọ ấy khởi lên -{'>'} Thọ ấy có duyên (để khởi lên) do thân/xúc -{'>'} 3 bước quán ở dưới</p>
                       <p>Ly dục: Tách rời khỏi các dục lạc vật chất để tâm có đủ độ tĩnh lặng (Định) mà quan sát.</p>
                     </div>
 
                     <div className="bg-emerald-900/50 p-2 rounded border-l-2 border-yellow-500 space-y-1">
                       <p className="font-bold text-yellow-400 text-[10px]">KỸ THUẬT "TÁCH LỚP" (XỬ LÝ KHI CẬN TỬ/ĐAU ĐỚN TỘT ĐỘ)</p>
                       <p>Khi thọ khổ lên đến cực điểm (Cảm giác cùng tận sức chịu đựng của sinh mạng):</p>
-                      <p>Bước 1: Truy nguyên nhân. Thọ này từ đâu ra? -> Từ Thân/Xúc.</p>
-                      <p>Bước 2: Phủ định cơ sở. Thân/Xúc là vô thường, hư hoại -> Thì Thọ sinh ra từ nó làm sao thường hằng được?</p>
+                      <p>Bước 1: Truy nguyên nhân. Thọ này từ đâu ra? -{'>'} Từ Thân/Xúc.</p>
+                      <p>Bước 2: Phủ định cơ sở. Thân/Xúc là vô thường, hư hoại -{'>'} Thì Thọ sinh ra từ nó làm sao thường hằng được?</p>
                       <p>Bước 3: Buông xả. Tuệ tri: "Sau khi thân hoại mạng chung, mọi cảm thọ này sẽ lắng dịu (như ngọn đèn tắt vì hết dầu)". Không còn gì đáng để nắm giữ hay sợ hãi.</p>
                     </div>
 
@@ -365,10 +365,10 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                     </div>
 
                     <div className="space-y-1 border-t border-emerald-800 pt-2">
-                      <p>Từ bỏ hỷ lạc vật chất -> Tìm hỷ lạc phi vật chất (Thiền định).</p>
-                      <p>Từ bỏ Hỷ (Sơ/Nhị thiền) -> Tìm Lạc (Tam thiền).</p>
-                      <p>Từ bỏ Lạc -> Tìm Xả (Tứ thiền).</p>
-                      <p>Vượt qua các Tưởng -> Các tầng thiền Vô sắc.</p>
+                      <p>Từ bỏ hỷ lạc vật chất -{'>'} Tìm hỷ lạc phi vật chất (Thiền định).</p>
+                      <p>Từ bỏ Hỷ (Sơ/Nhị thiền) -{'>'} Tìm Lạc (Tam thiền).</p>
+                      <p>Từ bỏ Lạc -{'>'} Tìm Xả (Tứ thiền).</p>
+                      <p>Vượt qua các Tưởng -{'>'} Các tầng thiền Vô sắc.</p>
                       <p>Đích đến: Diệt Thọ Tưởng Định.</p>
                       <p>Tại đây: Tưởng và Thọ bị đoạn diệt/tịnh chỉ hoàn toàn.</p>
                       <p>Đoạn tận Tham, Sân, Si.</p>
@@ -376,7 +376,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                     </div>
 
                     <div className="bg-emerald-900/30 p-2 rounded italic text-emerald-200 border border-emerald-800">
-                      Nếu có thọ nào khởi lên -> Tuệ tri: “Thọ ấy là vô thường - Ta không chấp trước thọ ấy - Ta không hoan hỷ thọ ấy."
+                      Nếu có thọ nào khởi lên -{'>'} Tuệ tri: “Thọ ấy là vô thường - Ta không chấp trước thọ ấy - Ta không hoan hỷ thọ ấy."
                     </div>
                   </div>
                 </div>
