@@ -101,30 +101,7 @@ const DhammaVisualizerV2 = () => {
 
           {activeMenu === '12duyen' && (
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center">
-              <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
-                <button
-                  onClick={() => setDuyenDirection('forward')}
-                  className={`px-4 py-2 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${
-                    duyenDirection === 'forward' 
-                      ? 'bg-white text-indigo-700 shadow-sm' 
-                      : 'text-slate-500 hover:text-slate-700'
-                  }`}
-                >
-                  <ArrowRight size={16} />
-                  Thuận
-                </button>
-                <button
-                  onClick={() => setDuyenDirection('reverse')}
-                  className={`px-4 py-2 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${
-                    duyenDirection === 'reverse' 
-                      ? 'bg-white text-indigo-700 shadow-sm' 
-                      : 'text-slate-500 hover:text-slate-700'
-                  }`}
-                >
-                  <RotateCcw size={16} />
-                  Nghịch
-                </button>
-              </div>
+           
 
               <div className="flex items-center gap-3 bg-emerald-50 px-4 py-2.5 rounded-lg border-2 border-emerald-200">
                 <Lightbulb size={18} className="text-emerald-600" />
@@ -148,7 +125,7 @@ const DhammaVisualizerV2 = () => {
       {/* Main content */}
       {activeMenu === '12duyen' && (
         <div className="flex-1 overflow-y-auto hide-scrollbar bg-slate-50 w-full">
-          <div className="w-full h-full p-4 md:p-8">
+          <div className="w-full h-full p-4 pt-0">
             <DuyenKhoiCircle 
               duyenDirection={duyenDirection}
               mindfulnessActive={mindfulnessActive}

@@ -9,8 +9,8 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
   // Vị trí cố định cho tooltip Thọ (sử dụng position absolute trong container)
   const thoTooltipStyle = {
     position: 'absolute',
-    top: '20px',
-    left: '720px',
+    top: '40%',
+    left: '54%',
     transform: 'none'
   };
 
@@ -121,7 +121,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
     };
 
     return (
-      <div className="relative w-full flex items-center justify-center" style={{ height: '700px' }}>
+      <div className="relative w-full flex items-center justify-center" style={{ height: '600px' }}>
         <svg width="700" height="700" className="absolute" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
           
           {/* 1. Vẽ các đường nối chính */}
@@ -195,14 +195,37 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
             const { x, y } = getCoords(nidana.angle, nidana.radiusOffset || 0);
             const isActive = hoveredNidana === nidana.id;
             
-            // --- LOGIC MÀU SẮC ---
+            // --- LOGIC MÀU SẮC THEO 4 PHẦN CỦA 12 NHÂN DUYÊN ---
             let colorClass = nidana.colorClass || 'bg-slate-700 border-slate-600';
-
-            // Màu mặc định cho các node chính
+            
+            // Màu mặc định cho các node chính theo 4 phần
             if (!nidana.colorClass) {
-                if (nidana.id === 6) colorClass = 'bg-red-400 border-red-300';
-                if (nidana.id === 7) colorClass = 'bg-red-600 border-red-500';
-                if (nidana.id === 8) colorClass = 'bg-red-900 border-red-800';
+                // Phần 1: Quá Khứ Nhân (Past Causes) - Màu tím đậm
+                if ([1, 2].includes(nidana.id)) {
+                    colorClass = nidana.id === 1 
+                        ? 'bg-purple-900 border-purple-800 ring-2 ring-purple-700' // Vô Minh - gốc rễ chu kỳ cũ
+                        : 'bg-purple-700 border-purple-600';
+                }
+                // Phần 2: Hiện Tại Quả (Present Effects) - Màu xanh dương
+                else if ([3, 4, 5, 6, 7].includes(nidana.id)) {
+                    if (nidana.id === 6) colorClass = 'bg-blue-500 border-blue-400';
+                    else if (nidana.id === 7) colorClass = 'bg-blue-600 border-blue-500';
+                    else colorClass = 'bg-blue-700 border-blue-600';
+                }
+                // Phần 3: Hiện Tại Nhân (Present Causes) - Màu đỏ
+                else if ([8, 9, 10].includes(nidana.id)) {
+                    colorClass = nidana.id === 8 
+                        ? 'bg-red-900 border-red-800 ring-2 ring-red-700' // Ái - gốc rễ chu kỳ mới
+                        : nidana.id === 9 
+                        ? 'bg-red-700 border-red-600'
+                        : 'bg-red-600 border-red-500';
+                }
+                // Phần 4: Tương Lai Quả (Future Effects) - Màu cam
+                else if ([11, 12].includes(nidana.id)) {
+                    colorClass = nidana.id === 11 
+                        ? 'bg-orange-700 border-orange-600'
+                        : 'bg-orange-600 border-orange-500';
+                }
             }
 
             // Hiệu ứng Chánh Niệm
@@ -279,7 +302,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                 style={thoTooltipStyle}
               >
                 {/* Lý thuyết Tooltip */}
-                <div className="bg-slate-900 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-blue-500 overflow-y-auto max-h-[80vh]">
+                <div className="bg-slate-900 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-blue-500 overflow-y-auto max-h-[40vh]">
                   <div className="text-sm font-bold mb-2 text-blue-300 border-b border-slate-700 pb-1">📖 Lý thuyết về Thọ (Vedanā)</div>
                   <div className="text-[11px] space-y-2 leading-relaxed">
                     <div className="space-y-1">
@@ -319,7 +342,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                 </div>
 
                 {/* Phương pháp Tooltip */}
-                <div className="bg-emerald-950 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-emerald-500 overflow-y-auto max-h-[80vh]">
+                <div className="bg-emerald-950 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-emerald-500 overflow-y-auto max-h-[40vh]">
                   <div className="text-sm font-bold mb-2 text-emerald-300 border-b border-emerald-800 pb-1">🧘 Phương pháp thực hành</div>
                   <div className="text-[11px] space-y-2 leading-relaxed">
                     <div className="space-y-1">
@@ -417,7 +440,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
   return (
     <div className="w-full h-full">
       {/* Diagram */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h2 className="text-lg font-bold text-slate-700 border-l-4 border-indigo-500 pl-3 mb-2">
           Vòng 12 Nhân Duyên (Paṭicca-samuppāda)
         </h2>
@@ -426,10 +449,48 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
             ? 'Chiều thuận: Sự tập khởi của khổ đau' 
             : 'Chiều nghịch: Sự đoạn diệt của khổ đau'}
         </p>
+      </div> */}
+
+      <div className="bg-white rounded-2xl shadow-lg p-8 pt-0 border border-slate-200">
+        {renderNidanasCircle()}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-        {renderNidanasCircle()}
+      {/* Chú thích màu sắc */}
+      <div className="mt-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg p-4 border border-slate-200">
+        <h3 className="text-sm font-bold text-slate-800 mb-3 text-center">🎨 Phân loại 4 giai đoạn của Vòng 12 Nhân Duyên</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-purple-900 rounded-full border-2 border-purple-700 shadow-md"></div>
+            <div className="text-xs">
+              <span className="font-semibold text-purple-900">Quá Khứ Nhân:</span>
+              <span className="text-slate-600 ml-1">Vô Minh ★, Hành</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-blue-700 rounded-full border-2 border-blue-600 shadow-md"></div>
+            <div className="text-xs">
+              <span className="font-semibold text-blue-800">Hiện Tại Quả:</span>
+              <span className="text-slate-600 ml-1">Thức, Danh Sắc, Lục Nhập, Xúc, Thọ</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-red-900 rounded-full border-2 border-red-700 shadow-md"></div>
+            <div className="text-xs">
+              <span className="font-semibold text-red-900">Hiện Tại Nhân:</span>
+              <span className="text-slate-600 ml-1">Ái ★, Thủ, Hữu</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-orange-700 rounded-full border-2 border-orange-600 shadow-md"></div>
+            <div className="text-xs">
+              <span className="font-semibold text-orange-800">Tương Lai Quả:</span>
+              <span className="text-slate-600 ml-1">Sinh, Già Chết</span>
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-2 text-xs text-slate-500">
+          ★ = Gốc rễ của chu kỳ (Vô Minh: chu kỳ cũ, Ái: chu kỳ mới)
+        </div>
       </div>
 
       <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
@@ -439,6 +500,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
             : "💡 Di chuột qua các mắc xích để xem mô tả. Chú ý màu đỏ đậm dần từ Xúc → Thọ → Ái thể hiện sự bám rễ của ô nhiễm."}
         </p>
       </div>
+     
     </div>
   );
 };
