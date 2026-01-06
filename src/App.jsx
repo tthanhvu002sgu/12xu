@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, RotateCcw, ArrowRight, Lightbulb } from 'lucide-react';
+import { Layers, RotateCcw, Lightbulb, Skull, Flower } from 'lucide-react'; // Added Flower icon
 import TwelveAyatana from './components/TwelveAyatana';
 import DuyenKhoiCircle from './components/DuyenKhoiCircle';
+import DeathCountdown from './components/DeathCountdown';
+import MeditationTimer from './components/MeditationTimer'; // Import new component
 
 const DhammaVisualizerV2 = () => {
   const [activeMenu, setActiveMenu] = useState('12xu');
@@ -21,7 +23,7 @@ const DhammaVisualizerV2 = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">
+    <div className="flex flex-col bg-slate-50 font-sans text-slate-800 overflow-hidden">
       
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {
@@ -69,29 +71,55 @@ const DhammaVisualizerV2 = () => {
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex-none shadow-sm z-10">
         <div className="flex flex-col gap-4 max-w-full mx-auto">
           {/* Main Menu Toggle */}
-          <div className="flex justify-center">
-            <div className="flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 p-1.5 rounded-xl border-2 border-blue-200 shadow-sm">
+          <div className="flex justify-center overflow-x-auto">
+            <div className="flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 p-1 rounded-lg border border-blue-200 shadow-sm shrink-0">
               <button
                 onClick={() => handleMenuChange('12xu')}
-                className={`px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
                   activeMenu === '12xu' 
-                    ? 'bg-white text-blue-700 shadow-md ring-2 ring-blue-300' 
+                    ? 'bg-white text-blue-700 shadow-sm ring-1 ring-blue-300' 
                     : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
                 }`}
               >
-                <Layers size={18} />
-                <span>12 Xứ (Āyatana)</span>
+                <Layers size={16} />
+                <span className="hidden sm:inline">12 Xứ</span>
+                <span className="sm:hidden">12 Xứ</span>
               </button>
               <button
                 onClick={() => handleMenuChange('12duyen')}
-                className={`px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
                   activeMenu === '12duyen' 
-                    ? 'bg-white text-indigo-700 shadow-md ring-2 ring-indigo-300' 
+                    ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-indigo-300' 
                     : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
                 }`}
               >
-                <RotateCcw size={18} />
-                <span>12 Duyên Khởi (Paṭicca-samuppāda)</span>
+                <RotateCcw size={16} />
+                <span className="hidden sm:inline">12 Duyên Khởi</span>
+                <span className="sm:hidden">Duyên Khởi</span>
+              </button>
+              <button
+                onClick={() => handleMenuChange('death')}
+                className={`px-4 md:px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
+                  activeMenu === 'death' 
+                    ? 'bg-white text-slate-800 shadow-md ring-2 ring-slate-400' 
+                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
+                }`}
+              >
+                <Skull size={18} />
+                <span className="hidden sm:inline">Quán Sự Chết</span>
+                <span className="sm:hidden">Sự Chết</span>
+              </button>
+              <button
+                onClick={() => handleMenuChange('meditation')}
+                className={`px-4 md:px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
+                  activeMenu === 'meditation' 
+                    ? 'bg-white text-emerald-800 shadow-md ring-2 ring-emerald-400' 
+                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
+                }`}
+              >
+                <Flower size={18} />
+                <span className="hidden sm:inline">Thiền</span>
+                <span className="sm:hidden">Thiền</span>
               </button>
             </div>
           </div>
@@ -123,18 +151,30 @@ const DhammaVisualizerV2 = () => {
       </div>
 
       {/* Main content */}
-      {activeMenu === '12duyen' && (
-        <div className="flex-1 overflow-y-auto hide-scrollbar bg-slate-50 w-full">
-          <div className="w-full h-full p-4 pt-0">
-            <DuyenKhoiCircle 
-              duyenDirection={duyenDirection}
-              mindfulnessActive={mindfulnessActive}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+      <div className="flex-1 overflow-y-auto hide-scrollbar bg-slate-50 w-full relative">
+        {activeMenu === '12duyen' && (
+            <div className="w-full h-full p-4 pt-0">
+              <DuyenKhoiCircle 
+                duyenDirection={duyenDirection}
+                mindfulnessActive={mindfulnessActive}
+              />
+            </div>
+        )}
+        
+        {activeMenu === 'death' && (
+            <div className="w-full h-full">
+              <DeathCountdown />
+            </div>
+        )}
 
-export default DhammaVisualizerV2;
+                {activeMenu === 'meditation' && (
+                    <div className="w-full h-full p-4 md:p-8">
+                      <MeditationTimer />
+                    </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+        
+        export default DhammaVisualizerV2;

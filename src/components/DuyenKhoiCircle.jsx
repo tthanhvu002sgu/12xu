@@ -1,12 +1,73 @@
 import React, { useState, useEffect } from 'react';
+import { Edit2, Save, X, RotateCcw } from 'lucide-react';
+
+// Dữ liệu mặc định
+const DEFAULT_NIDANAS = [
+  { id: 1, name: 'Vô Minh', pali: 'Avijjā', description: 'Không hiểu biết về Tứ Thánh Đế', angle: 0 },
+  { id: 2, name: 'Hành', pali: 'Saṅkhāra', description: 'Các hành động tạo nghiệp (Thân, Khẩu, Ý)', angle: 30 },
+  { id: 3, name: 'Thức', pali: 'Viññāṇa', description: 'Thức tái sinh', angle: 60 },
+  { id: 4, name: 'Danh Sắc', pali: 'Nāmarūpa', description: 'Thân và tâm', angle: 90 },
+  { id: 5, name: 'Lục Nhập', pali: 'Saḷāyatana', description: 'Sáu căn (mắt, tai, mũi, lưỡi, thân, ý)', angle: 120 },
+  { id: 6, name: 'Xúc', pali: 'Phassa', description: '6 xúc', angle: 150 },
+  { id: 7, name: 'Thọ', pali: 'Vedanā', description: 'Cảm thọ', angle: 180 },
+  { id: 8, name: 'Ái', pali: 'Taṇhā', description: 'Khát ái (Từ Thọ Lạc)', angle: 210, isBreakpoint: true },
+  { id: 9, name: 'Thủ', pali: 'Upādāna', description: 'Sự chấp giữ: dục thủ, kiến thủ, giới cấm thủ, ngã luận thủ', angle: 240 },
+  { id: 10, name: 'Hữu', pali: 'Bhava', description: 'Nghiệp hữu (nghiệp đưa đến tái sanh)', angle: 270 },
+  { id: 11, name: 'Sinh', pali: 'Jāti', description: 'Sự tái sanh vào kiếp sống mới', angle: 300 },
+  { id: 12, name: 'Già Chết', pali: 'Jarāmaraṇa', description: 'Già, chết, sầu, bi, khổ, ưu, não', angle: 330 }
+];
+
+const DEFAULT_PARALLEL_NODES = [
+  { 
+    id: '8b', 
+    name: 'Sân', 
+    pali: 'Dosa', 
+    description: 'Sự bất mãn, nóng giận (Từ Thọ Khổ)', 
+    angle: 210, 
+    radiusOffset: 100, 
+    colorClass: 'bg-orange-700 border-orange-600'
+  },
+  { 
+    id: '8c', 
+    name: 'Si', 
+    pali: 'Moha', 
+    description: 'Sự mê mờ, không biết (Từ Thọ Xả)', 
+    angle: 210, 
+    radiusOffset: -100, 
+    colorClass: 'bg-slate-600 border-slate-500'
+  }
+];
 
 const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
+  const [nidanas, setNidanas] = useState(DEFAULT_NIDANAS);
+  const [parallelNodes, setParallelNodes] = useState(DEFAULT_PARALLEL_NODES);
   const [hoveredNidana, setHoveredNidana] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [mindfulnessTarget, setMindfulnessTarget] = useState(7);
   const [pinnedNidana, setPinnedNidana] = useState(null);
+  
+  // State cho việc chỉnh sửa
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState('');
 
-  // Vị trí cố định cho tooltip Thọ (sử dụng position absolute trong container)
+  // Load dữ liệu từ localStorage
+  useEffect(() => {
+    const savedNidanas = localStorage.getItem('dhamma-nidanas-v2');
+    if (savedNidanas) {
+      try {
+        setNidanas(JSON.parse(savedNidanas));
+      } catch (e) { console.error('Error loading nidanas', e); }
+    }
+
+    const savedParallel = localStorage.getItem('dhamma-parallel-nodes-v2');
+    if (savedParallel) {
+      try {
+        setParallelNodes(JSON.parse(savedParallel));
+      } catch (e) { console.error('Error loading parallel nodes', e); }
+    }
+  }, []);
+
+  // Vị trí cố định cho tooltip Thọ
   const thoTooltipStyle = {
     position: 'absolute',
     top: '40%',
@@ -20,45 +81,6 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
     }
   }, [mindfulnessActive]);
 
-  // Danh sách 12 nhân duyên chính
-  const nidanas = [
-    { id: 1, name: 'Vô Minh', pali: 'Avijjā', description: 'Không hiểu biết về Tứ Thánh Đế', angle: 0 },
-    { id: 2, name: 'Hành', pali: 'Saṅkhāra', description: 'Các hành động tạo nghiệp (Thân, Khẩu, Ý)', angle: 30 },
-    { id: 3, name: 'Thức', pali: 'Viññāṇa', description: 'Thức tái sinh', angle: 60 },
-    { id: 4, name: 'Danh Sắc', pali: 'Nāmarūpa', description: 'Thân và tâm', angle: 90 },
-    { id: 5, name: 'Lục Nhập', pali: 'Saḷāyatana', description: 'Sáu căn (mắt, tai, mũi, lưỡi, thân, ý)', angle: 120 },
-    { id: 6, name: 'Xúc', pali: 'Phassa', description: 'Sự tiếp xúc', angle: 150 },
-    { id: 7, name: 'Thọ', pali: 'Vedanā', description: 'Cảm thọ', angle: 180 },
-    { id: 8, name: 'Ái', pali: 'Taṇhā', description: 'Khát ái (Từ Thọ Lạc)', angle: 210, isBreakpoint: true },
-    { id: 9, name: 'Thủ', pali: 'Upādāna', description: 'Sự chấp giữ: dục thủ, kiến thủ, giới cấm thủ, ngã luận thủ', angle: 240 },
-    { id: 10, name: 'Hữu', pali: 'Bhava', description: 'Nghiệp hữu (nghiệp đưa đến tái sanh)', angle: 270 },
-    { id: 11, name: 'Sinh', pali: 'Jāti', description: 'Sự tái sanh vào kiếp sống mới', angle: 300 },
-    { id: 12, name: 'Già Chết', pali: 'Jarāmaraṇa', description: 'Già, chết, sầu, bi, khổ, ưu, não', angle: 330 }
-  ];
-
-  // Các mắt xích song song với Ái (Sân, Si)
-  // Chúng có cùng góc (angle) với Ái (210) nhưng khác bán kính (radiusOffset)
-  const parallelNodes = [
-    { 
-      id: '8b', 
-      name: 'Sân', 
-      pali: 'Dosa', 
-      description: 'Sự bất mãn, nóng giận (Từ Thọ Khổ)', 
-      angle: 210, // Cùng góc với Ái
-      radiusOffset: 100, // Nằm vòng ngoài
-      colorClass: 'bg-orange-700 border-orange-600'
-    },
-    { 
-      id: '8c', 
-      name: 'Si', 
-      pali: 'Moha', 
-      description: 'Sự mê mờ, không biết (Từ Thọ Xả)', 
-      angle: 210, // Cùng góc với Ái
-      radiusOffset: -100, // Nằm vòng trong
-      colorClass: 'bg-slate-600 border-slate-500'
-    }
-  ];
-
   const handleNodeClick = (nidana, event) => {
     if (mindfulnessActive && [6, 7, 8].includes(nidana.id)) {
       setMindfulnessTarget(nidana.id);
@@ -69,7 +91,97 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
       const willPin = pinnedNidana !== 7;
       setPinnedNidana(willPin ? 7 : null);
       setHoveredNidana(willPin ? 7 : null);
+    } else {
+      // Cho phép pin các node khác để edit dễ hơn
+      const willPin = pinnedNidana !== nidana.id;
+      setPinnedNidana(willPin ? nidana.id : null);
+      setHoveredNidana(willPin ? nidana.id : null);
     }
+  };
+
+  // Handlers cho việc chỉnh sửa
+  const handleEditStart = (node) => {
+    setEditingId(node.id);
+    setEditContent(node.description);
+  };
+
+  const handleSave = () => {
+    // Tìm trong nidanas chính
+    const nidanaIndex = nidanas.findIndex(n => n.id === editingId);
+    if (nidanaIndex !== -1) {
+      const newNidanas = [...nidanas];
+      newNidanas[nidanaIndex] = { ...newNidanas[nidanaIndex], description: editContent };
+      setNidanas(newNidanas);
+      localStorage.setItem('dhamma-nidanas-v2', JSON.stringify(newNidanas));
+    } else {
+      // Tìm trong parallel nodes
+      const parallelIndex = parallelNodes.findIndex(n => n.id === editingId);
+      if (parallelIndex !== -1) {
+        const newParallel = [...parallelNodes];
+        newParallel[parallelIndex] = { ...newParallel[parallelIndex], description: editContent };
+        setParallelNodes(newParallel);
+        localStorage.setItem('dhamma-parallel-nodes-v2', JSON.stringify(newParallel));
+      }
+    }
+    setEditingId(null);
+    setEditContent('');
+  };
+
+  const handleResetDefaults = () => {
+    if (window.confirm('Bạn có chắc muốn khôi phục lại nội dung gốc? Mọi chỉnh sửa sẽ bị mất.')) {
+      setNidanas(DEFAULT_NIDANAS);
+      setParallelNodes(DEFAULT_PARALLEL_NODES);
+      localStorage.removeItem('dhamma-nidanas-v2');
+      localStorage.removeItem('dhamma-parallel-nodes-v2');
+      setEditingId(null);
+    }
+  };
+
+  // Component hiển thị nội dung có thể edit
+  const EditableDescription = ({ nidana, className = "" }) => {
+    const isEditing = editingId === nidana.id;
+
+    if (isEditing) {
+      return (
+        <div className="flex flex-col gap-2 mt-2 bg-slate-800 p-2 rounded border border-slate-600 pointer-events-auto">
+          <textarea 
+            className="text-slate-800 text-sm p-2 rounded w-full font-sans" 
+            rows={4}
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            placeholder="Nhập mô tả..."
+          />
+          <div className="flex justify-end gap-2">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setEditingId(null); }} 
+              className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-white flex items-center gap-1 text-xs"
+            >
+              <X size={14}/> Hủy
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); handleSave(); }} 
+              className="p-1.5 bg-blue-600 hover:bg-blue-500 rounded text-white flex items-center gap-1 text-xs"
+            >
+              <Save size={14}/> Lưu
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className={`group relative ${className}`}>
+        <div className="pr-6">{nidana.description}</div>
+        <button 
+          onClick={(e) => { e.stopPropagation(); handleEditStart(nidana); }}
+          className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-white transition-opacity p-1 rounded hover:bg-white/10 pointer-events-auto"
+          title="Chỉnh sửa nội dung"
+        >
+          <Edit2 size={14} />
+        </button>
+      </div>
+    );
   };
 
   // Hàm vẽ đường nối (Line)
@@ -242,7 +354,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
               }
             }
 
-            const isClickable = mindfulnessActive && [6, 7, 8].includes(nidana.id);
+            const isClickable = true; // Cho phép click tất cả để pin/edit
 
             return (
               <div
@@ -265,13 +377,13 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                   setHoveredNidana(nidana.id);
                 }}
                 onMouseLeave={() => {
-                  // Nếu đang ghim tooltip Thọ thì giữ nguyên, ngược lại ẩn khi rời chuột
-                  if (nidana.id === 7 && pinnedNidana === 7) return;
+                  // Nếu đang ghim tooltip thì giữ nguyên
+                  if (pinnedNidana === nidana.id) return;
                   setHoveredNidana(null);
                 }}
                 onMouseMove={(e) => {
-                  // Khi đã ghim Thọ, không cập nhật vị trí theo chuột nữa
-                  if (nidana.id === 7 && pinnedNidana === 7) return;
+                  // Khi đã ghim, không cập nhật vị trí theo chuột nữa
+                  if (pinnedNidana === nidana.id) return;
                   setTooltipPos({ x: e.clientX, y: e.clientY });
                 }}
                 onClick={(e) => handleNodeClick(nidana, e)}
@@ -303,7 +415,10 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
               >
                 {/* Lý thuyết Tooltip */}
                 <div className="bg-slate-900 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-blue-500 overflow-y-auto max-h-[40vh]">
-                  <div className="text-sm font-bold mb-2 text-blue-300 border-b border-slate-700 pb-1">📖 Lý thuyết về Thọ (Vedanā)</div>
+                  <div className="text-sm font-bold mb-2 text-blue-300 border-b border-slate-700 pb-1 flex justify-between items-center">
+                    <span>📖 Lý thuyết về Thọ (Vedanā)</span>
+                    {pinnedNidana === 7 && <button onClick={() => setPinnedNidana(null)} className="text-xs text-slate-400 hover:text-white"><X size={14}/></button>}
+                  </div>
                   <div className="text-[11px] space-y-2 leading-relaxed">
                     <div className="space-y-1">
                       <p>2 thọ (Thân, Tâm).</p>
@@ -337,7 +452,10 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                       <p className="font-bold text-emerald-300">Lạc Tối thượng (Giải thoát): Diệt thọ tưởng định & A-la-hán quả -{'>'} Sự vắng mặt hoàn toàn của các Hành và Lậu hoặc.</p>
                     </div>
 
-                    <p className="text-right text-[10px] opacity-70">Nguồn gốc: do Xúc</p>
+                    <div className="mt-3 pt-2 border-t border-slate-700">
+                      <div className="text-xs font-bold text-slate-400 mb-1">Ghi chú của bạn:</div>
+                      <EditableDescription nidana={nidana} className="text-slate-300 italic bg-slate-800/50 p-2 rounded" />
+                    </div>
                   </div>
                 </div>
 
@@ -384,11 +502,11 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
             );
           }
           
-          const isKeyPoint = [6, 8].includes(nidana.id);
+          const isKeyPoint = [ 8].includes(nidana.id);
 
           return (
             <div 
-              className="fixed z-[9999] pointer-events-none"
+              className="fixed z-[9999] pointer-events-auto"
               style={{ 
                 left: `${tooltipPos.x + 20}px`, 
                 top: `${tooltipPos.y}px`,
@@ -397,7 +515,10 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
             >
               {isKeyPoint ? (
                 <div className="bg-emerald-900 text-white p-4 rounded-lg shadow-xl w-80 border-2 border-emerald-600">
-                  <div className="text-sm font-bold mb-2 text-emerald-200">🔓 Cách Cắt Đứt Vòng Luân Hồi:</div>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="text-sm font-bold text-emerald-200">🔓 Cách Cắt Đứt Vòng Luân Hồi:</div>
+                    {pinnedNidana === nidana.id && <button onClick={() => setPinnedNidana(null)} className="text-xs text-emerald-400 hover:text-white"><X size={14}/></button>}
+                  </div>
                   <div className="text-xs space-y-2 leading-relaxed">
                     <p>• Khi <span className="font-semibold text-amber-300">Cảm thọ</span> sanh khởi → Thiết lập <span className="font-semibold text-emerald-300">Chánh niệm</span></p>
                     <p>• Thay vì để Thọ sinh ra <span className="font-semibold text-red-300">Ái, Sân, Si</span></p>
@@ -409,11 +530,19 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
                         Click vào Xúc, Thọ hoặc Ái để thay đổi điểm ứng dụng Chánh niệm.
                       </p>
                     )}
+                    <div className="mt-3 pt-2 border-t border-emerald-700">
+                      <div className="text-xs font-bold text-emerald-400 mb-1">Ghi chú của bạn:</div>
+                      <EditableDescription nidana={nidana} className="text-emerald-100 italic bg-emerald-800/50 p-2 rounded" />
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="bg-slate-900 text-white p-3 rounded-lg shadow-xl w-64">
-                  <div className="text-sm leading-relaxed">{nidana.description}</div>
+                  <div className="flex justify-between items-start mb-1">
+                    <div className="text-xs font-bold text-slate-400">{nidana.name} ({nidana.pali})</div>
+                    {pinnedNidana === nidana.id && <button onClick={() => setPinnedNidana(null)} className="text-xs text-slate-500 hover:text-white"><X size={14}/></button>}
+                  </div>
+                  <EditableDescription nidana={nidana} className="text-sm leading-relaxed" />
                 </div>
               )}
             </div>
@@ -439,24 +568,20 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
 
   return (
     <div className="w-full h-full">
-      {/* Diagram */}
-      {/* <div className="mb-6">
-        <h2 className="text-lg font-bold text-slate-700 border-l-4 border-indigo-500 pl-3 mb-2">
-          Vòng 12 Nhân Duyên (Paṭicca-samuppāda)
-        </h2>
-        <p className="text-sm text-slate-600 ml-5">
-          {duyenDirection === 'forward' 
-            ? 'Chiều thuận: Sự tập khởi của khổ đau' 
-            : 'Chiều nghịch: Sự đoạn diệt của khổ đau'}
-        </p>
-      </div> */}
-
       <div className="bg-white rounded-2xl shadow-lg p-8 pt-0 border border-slate-200">
         {renderNidanasCircle()}
       </div>
 
       {/* Chú thích màu sắc */}
-      <div className="mt-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg p-4 border border-slate-200">
+      <div className="mt-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg p-4 border border-slate-200 relative">
+        <button 
+          onClick={handleResetDefaults}
+          className="absolute top-4 right-4 text-xs flex items-center gap-1 text-slate-400 hover:text-red-500 transition-colors"
+          title="Khôi phục nội dung gốc"
+        >
+          <RotateCcw size={12} /> Reset Data
+        </button>
+
         <h3 className="text-sm font-bold text-slate-800 mb-3 text-center">🎨 Phân loại 4 giai đoạn của Vòng 12 Nhân Duyên</h3>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center gap-3">
@@ -493,13 +618,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
         </div>
       </div>
 
-      <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-        <p className="text-sm text-blue-900 font-medium">
-          {mindfulnessActive 
-            ? "💡 Bạn đang bật chế độ Chánh Niệm. Hãy thử click vào Xúc, Thọ hoặc Ái để xem cách chánh niệm cắt đứt vòng luân hồi tại các thời điểm khác nhau."
-            : "💡 Di chuột qua các mắc xích để xem mô tả. Chú ý màu đỏ đậm dần từ Xúc → Thọ → Ái thể hiện sự bám rễ của ô nhiễm."}
-        </p>
-      </div>
+      
      
     </div>
   );
