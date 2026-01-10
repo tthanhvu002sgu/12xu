@@ -136,7 +136,7 @@ const DeathCountdown = () => {
               <Skull size={48} className="text-slate-600" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2 font-serif">
+          <h2 className="text-2xl font-bold text-slate-800 mb-2 ">
             Đồng Hồ Sự Chết
           </h2>
           <p className="text-slate-500 mb-8 leading-relaxed">

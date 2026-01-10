@@ -559,7 +559,7 @@ const DuyenKhoiCircle = ({ duyenDirection, mindfulnessActive }) => {
           <div className="flex flex-col items-center justify-center h-full">
             <div className="text-2xl font-bold text-slate-700">12</div>
             <div className="text-sm font-bold text-slate-600 text-center">Nhân Duyên</div>
-            <div className="text-xs text-slate-500 mt-1 text-center">Paṭicca-samuppāda</div>
+            {/* <div className="text-xs text-slate-500 mt-1 text-center">Paṭicca-samuppāda</div> */}
           </div>
         </div>
       </div>

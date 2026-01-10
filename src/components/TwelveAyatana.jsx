@@ -24,42 +24,18 @@ const TwelveAyatana = () => {
 
   // Dữ liệu 6 Căn & 6 Cảnh
   const senses = {
-    eye: { 
-      id: 'eye', label: 'Mắt', icon: Eye, 
-      internal: 'Mắt', external: 'Các Sắc', 
-      consciousness: 'Nhãn thức', contact: 'Nhãn xúc' 
-    },
-    ear: { 
-      id: 'ear', label: 'Tai', icon: Ear, 
-      internal: 'Tai', external: 'Các Tiếng', 
-      consciousness: 'Nhĩ thức', contact: 'Nhĩ xúc' 
-    },
-    nose: { 
-      id: 'nose', label: 'Mũi', icon: Wind, 
-      internal: 'Mũi', external: 'Các Hương', 
-      consciousness: 'Tỷ thức', contact: 'Tỷ xúc' 
-    },
-    tongue: { 
-      id: 'tongue', label: 'Lưỡi', icon: Smile, 
-      internal: 'Lưỡi', external: 'Các Vị', 
-      consciousness: 'Thiệt thức', contact: 'Thiệt xúc' 
-    },
-    body: { 
-      id: 'body', label: 'Thân', icon: Hand, 
-      internal: 'Thân', external: 'Các Xúc', 
-      consciousness: 'Thân thức', contact: 'Thân xúc' 
-    },
-    mind: { 
-      id: 'mind', label: 'Ý', icon: Brain, 
-      internal: 'Ý', external: 'Các Pháp', 
-      consciousness: 'Ý thức', contact: 'Ý xúc' 
-    },
+    eye: { id: 'eye', label: 'Mắt', icon: Eye, internal: 'Mắt', external: 'Các Sắc', consciousness: 'Nhãn thức', contact: 'Nhãn xúc' },
+    ear: { id: 'ear', label: 'Tai', icon: Ear, internal: 'Tai', external: 'Các Tiếng', consciousness: 'Nhĩ thức', contact: 'Nhĩ xúc' },
+    nose: { id: 'nose', label: 'Mũi', icon: Wind, internal: 'Mũi', external: 'Các Hương', consciousness: 'Tỷ thức', contact: 'Tỷ xúc' },
+    tongue: { id: 'tongue', label: 'Lưỡi', icon: Smile, internal: 'Lưỡi', external: 'Các Vị', consciousness: 'Thiệt thức', contact: 'Thiệt xúc' },
+    body: { id: 'body', label: 'Thân', icon: Hand, internal: 'Thân', external: 'Các Xúc', consciousness: 'Thân thức', contact: 'Thân xúc' },
+    mind: { id: 'mind', label: 'Ý', icon: Brain, internal: 'Ý', external: 'Các Pháp', consciousness: 'Ý thức', contact: 'Ý xúc' },
   };
 
   const currentSenseData = senses[selectedSense];
   const currentSubject = targetType === 'internal' ? currentSenseData.internal : currentSenseData.external;
 
-  // Dữ liệu các công thức
+  // Dữ liệu các công thức (giữ nguyên content)
   const formulas = {
     tam_tuong: {
       id: 'tam_tuong',
@@ -280,7 +256,7 @@ const TwelveAyatana = () => {
     };
   }, [isResizingSidebar, isResizingScripture, sidebarWidth, scriptureWidth]);
 
-  // Drag handlers
+  // Drag handlers (giữ nguyên logic)
   const handleDragStart = (e, formulaId) => {
     setDraggedItem(formulaId);
     e.dataTransfer.effectAllowed = 'move';
@@ -322,14 +298,15 @@ const TwelveAyatana = () => {
 
   const currentFormula = formulas[selectedFormula];
 
+  // KINDLE STYLE: High Contrast, Borders, No Colors
   const getNodeStyles = (type) => {
     switch(type) {
-      case 'input': return 'bg-slate-100 border-slate-300 text-slate-700';
-      case 'process': return 'bg-blue-50 border-blue-200 text-blue-700';
-      case 'danger': return 'bg-red-50 border-red-200 text-red-700';
-      case 'wisdom': return 'bg-emerald-50 border-emerald-200 text-emerald-800 font-medium';
-      case 'result': return 'bg-emerald-600 border-emerald-700 text-white shadow-md';
-      default: return 'bg-white border-slate-200';
+      case 'input': return 'bg-white border text-black border-black';
+      case 'process': return 'bg-white border-2 border-dotted border-gray-400 text-black italic';
+      case 'danger': return 'bg-white border-4 border-black text-black font-bold';
+      case 'wisdom': return 'bg-black text-white border border-black font-medium';
+      case 'result': return 'bg-gray-200 border-2 border-black text-black font-bold shadow-[4px_4px_0_0_black]';
+      default: return 'bg-white border border-black';
     }
   };
 
@@ -337,40 +314,41 @@ const TwelveAyatana = () => {
 
   return (
     <>
-      {/* Controls in header */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center">
-        <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+      {/* Controls in header - Kindle Style Buttons */}
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center p-4 border-b border-black">
+        <div className="flex items-center overflow-hidden border border-black rounded-sm shadow-sm">
           <button
             onClick={() => setTargetType('internal')}
-            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+            className={`px-6 py-2 text-sm font-bold uppercase transition-all ${
               targetType === 'internal' 
-                ? 'bg-white text-blue-700 shadow-sm' 
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'bg-black text-white' 
+                : 'bg-white text-black hover:bg-gray-100'
             }`}
           >
             Giác Quan
           </button>
+          <div className="w-px h-full bg-black"></div>
           <button
             onClick={() => setTargetType('external')}
-            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+            className={`px-6 py-2 text-sm font-bold uppercase transition-all ${
               targetType === 'external' 
-                ? 'bg-white text-blue-700 shadow-sm' 
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'bg-black text-white' 
+                : 'bg-white text-black hover:bg-gray-100'
             }`}
           >
             Cảnh
           </button>
         </div>
 
-        <div className="flex gap-1 bg-slate-100 p-1 rounded-lg overflow-x-auto hide-scrollbar max-w-full">
+        <div className="flex gap-0 flex-wrap justify-center border border-black rounded-sm overflow-hidden shadow-sm">
           {Object.values(senses).map((s) => (
             <button
               key={s.id}
               onClick={() => setSelectedSense(s.id)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all whitespace-nowrap text-sm font-medium ${
+              className={`flex items-center gap-2 px-4 py-2 border-r border-black last:border-r-0 transition-all whitespace-nowrap text-sm font-bold ${
                 selectedSense === s.id 
-                  ? 'bg-white text-blue-700 shadow-sm ring-1 ring-slate-200' 
-                  : 'text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                  ? 'bg-black text-white' 
+                  : 'bg-white text-black hover:bg-gray-100'
               }`}
             >
               <s.icon size={16} />
@@ -381,22 +359,21 @@ const TwelveAyatana = () => {
       </div>
 
       {/* 3-column layout */}
-      <div ref={containerRef} className="flex flex-col lg:flex-row flex-1 overflow-hidden w-full relative">
+      <div ref={containerRef} className="flex flex-col lg:flex-row flex-1 overflow-hidden w-full relative bg-white text-black font-sans">
         
         {/* Sidebar Column */}
         <div 
-          className="bg-white border-r border-slate-200 flex-none flex flex-col overflow-hidden relative"
+          className="bg-white border-r border-black flex-none flex flex-col overflow-hidden relative"
           style={{ 
             width: window.innerWidth >= 1024 ? `${sidebarWidth}px` : '100%',
             minWidth: window.innerWidth >= 1024 ? `${MIN_SIDEBAR_WIDTH}px` : 'auto',
             maxWidth: window.innerWidth >= 1024 ? `${MAX_SIDEBAR_WIDTH}px` : 'none'
           }}
         >
-          <div className="p-4 bg-slate-50 border-b border-slate-200 flex-none">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Chọn Công Thức Quán</h3>
-            <p className="text-xs text-slate-400 mt-1">Kéo thả để sắp xếp</p>
+          <div className="p-4 bg-gray-50 border-b border-black flex-none">
+            <h3 className="text-xs font-bold text-black uppercase tracking-widest text-center">Danh mục quán chiếu</h3>
           </div>
-          <div className="flex-1 overflow-y-auto hide-scrollbar p-2 space-y-1">
+          <div className="flex-1 overflow-y-auto hide-scrollbar">
             {orderedFormulas.map((f) => (
               <div
                 key={f.id}
@@ -405,30 +382,29 @@ const TwelveAyatana = () => {
                 onDragOver={(e) => handleDragOver(e, f.id)}
                 onDrop={(e) => handleDrop(e, f.id)}
                 onDragEnd={handleDragEnd}
-                className={`transition-all ${
-                  draggedItem === f.id ? 'opacity-40 scale-95' : ''
+                className={`transition-all border-b border-black last:border-b-0 ${
+                  draggedItem === f.id ? 'opacity-40' : ''
                 } ${
-                  dragOverItem === f.id ? 'border-t-2 border-blue-500' : ''
+                  dragOverItem === f.id ? 'bg-gray-200' : ''
                 }`}
               >
                 <button
                   onClick={() => setSelectedFormula(f.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-all flex items-start gap-3 group cursor-pointer ${
+                  className={`w-full text-left p-4 transition-all flex items-start gap-4 group cursor-pointer ${
                     selectedFormula === f.id
-                      ? `bg-${f.color}-50 border-${f.color}-200 ring-1 ring-${f.color}-300`
-                      : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
+                      ? `bg-black text-white`
+                      : 'bg-white text-black hover:bg-gray-100'
                   }`}
                 >
-                  <div className="p-1 cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0">
+                  <div className={`p-1 mt-1 flex-shrink-0 cursor-grab active:cursor-grabbing ${selectedFormula === f.id ? 'text-white' : 'text-gray-400 hover:text-black'}`}>
                     <GripVertical size={16} />
                   </div>
                   
-                  <div className={`p-2 rounded-md mt-1 flex-shrink-0 ${selectedFormula === f.id ? `bg-${f.color}-100 text-${f.color}-600` : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200'}`}>
-                    <f.icon size={18} />
-                  </div>
                   <div className="min-w-0 flex-1">
-                    <div className={`font-semibold text-sm ${selectedFormula === f.id ? `text-${f.color}-900` : 'text-slate-700'}`}>{f.title}</div>
-                    <div className="text-xs text-slate-500 mt-1 line-clamp-2">{f.description}</div>
+                    <div className="font-bold text-sm uppercase">{f.title}</div>
+                    <div className={`text-xs mt-1 italic ${selectedFormula === f.id ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {f.description}
+                    </div>
                   </div>
                 </button>
               </div>
@@ -438,8 +414,8 @@ const TwelveAyatana = () => {
           {/* Resize handle for sidebar */}
           {window.innerWidth >= 1024 && (
             <div 
-              className={`resize-handle ${isResizingSidebar ? 'active' : ''}`}
-              style={{ right: '-3px' }}
+              className={`w-1 bg-black opacity-0 hover:opacity-20 cursor-col-resize absolute top-0 bottom-0 z-20 ${isResizingSidebar ? 'opacity-20' : ''}`}
+              style={{ right: '0px' }}
               onMouseDown={handleSidebarMouseDown}
             />
           )}
@@ -447,40 +423,41 @@ const TwelveAyatana = () => {
 
         {/* Flowchart Column */}
         <div 
-          className="flex-1 overflow-y-auto hide-scrollbar p-4 md:p-8 border-r border-slate-200"
+          className="flex-1 overflow-y-auto hide-scrollbar p-6 md:p-8 relative bg-white"
           style={{ 
             minWidth: window.innerWidth >= 1024 ? `${MIN_FLOWCHART_WIDTH}px` : 'auto'
           }}
         >
           <div className="max-w-4xl mx-auto">
-            <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
-              <h2 className="text-lg font-bold text-slate-700 border-l-4 border-blue-500 pl-3">
-                Sơ Đồ: {currentFormula.title}
+            <div className="mb-8 flex items-center justify-between flex-wrap gap-4 border-b-2 border-black pb-4">
+              <h2 className="text-xl font-bold text-black uppercase tracking-wide">
+                {currentFormula.title}
               </h2>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase text-slate-400">Đối tượng quán:</span>
-                <span className={`text-sm font-mono px-3 py-1 rounded border ${
-                  targetType === 'internal' ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-orange-100 text-orange-700 border-orange-200'
-                }`}>
+              <div className="flex items-center gap-2 border border-black px-3 py-1 rounded-sm bg-gray-50">
+                <span className="text-xs font-bold uppercase text-gray-500">Đối tượng:</span>
+                <span className="text-sm font-bold font-mono uppercase">
                   {currentSubject}
                 </span>
               </div>
             </div>
 
-            <div className="relative pl-4 md:pl-0 space-y-4 md:space-y-6">
-              <div className="absolute left-8 top-4 bottom-4 w-0.5 bg-slate-200 -z-0 hidden md:block" style={{ left: '1.75rem' }}></div>
+            <div className="relative pl-4 space-y-6">
+              {/* Dotted Line */}
+              <div className="absolute left-[34px] top-6 bottom-6 w-0.5 border-l-2 border-dotted border-black -z-0"></div>
 
               {currentFormula.flow.map((step, index) => (
-                <div key={index} className="relative z-10 flex gap-4 items-start group">
-                  <div className={`flex-none w-14 h-14 rounded-full border-4 border-white shadow-sm flex items-center justify-center font-bold text-lg transition-colors ${
-                     step.type === 'result' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'
+                <div key={index} className="relative z-10 flex gap-6 items-start">
+                  <div className={`flex-none w-10 h-10 rounded-full border-2 border-black flex items-center justify-center font-bold text-lg bg-white z-10 ${
+                     step.type === 'result' ? 'bg-black text-white' : 'text-black'
                   }`}>
                     {index + 1}
                   </div>
 
-                  <div className={`flex-1 p-4 rounded-xl border shadow-sm transition-all hover:shadow-md ${getNodeStyles(step.type)}`}>
-                    <div className="text-xs font-bold opacity-60 uppercase mb-1 tracking-wider">{step.label}</div>
-                    <div className="font-medium text-lg leading-snug">{step.text}</div>
+                  <div className={`flex-1 p-5 rounded-sm transition-all ${getNodeStyles(step.type)}`}>
+                    <div className="text-[10px] font-bold uppercase mb-2 tracking-widest border-b border-current pb-1 w-fit opacity-70">
+                        {step.label}
+                    </div>
+                    <div className="font-medium text-lg leading-relaxed">{step.text}</div>
                   </div>
                 </div>
               ))}
@@ -490,7 +467,7 @@ const TwelveAyatana = () => {
 
         {/* Scripture Column */}
         <div 
-          className="bg-slate-800 flex flex-col shadow-lg relative flex-shrink-0"
+          className="bg-gray-50 border-l border-black flex flex-col flex-shrink-0 relative z-10"
           style={{ 
             width: window.innerWidth >= 1024 ? `${scriptureWidth}px` : '100%',
             minWidth: window.innerWidth >= 1024 ? `${MIN_SCRIPTURE_WIDTH}px` : 'auto',
@@ -500,20 +477,20 @@ const TwelveAyatana = () => {
           {/* Resize handle for scripture column */}
           {window.innerWidth >= 1024 && (
             <div 
-              className={`resize-handle ${isResizingScripture ? 'active' : ''}`}
-              style={{ left: '-3px' }}
+              className={`w-1 bg-black opacity-0 hover:opacity-20 cursor-col-resize absolute top-0 bottom-0 z-20 ${isResizingScripture ? 'opacity-20' : ''}`}
+              style={{ left: '0px' }}
               onMouseDown={handleScriptureMouseDown}
             />
           )}
           
-          <div className="px-6 py-4 bg-slate-900/50 border-b border-slate-700 flex-none">
-            <div className="flex items-center gap-2 text-slate-300">
-              <BookOpen size={20} className="text-amber-500" />
-              <span className="font-bold text-base uppercase tracking-wider">Kinh Văn Tương Ứng</span>
+          <div className="px-6 py-5 border-b border-black flex-none">
+            <div className="flex items-center justify-center gap-2 text-black">
+              <BookOpen size={20} />
+              <span className="font-bold text-sm uppercase tracking-widest">Kinh Văn Tương Ứng</span>
             </div>
           </div>
-          <div className="flex-1 overflow-y-auto hide-scrollbar p-6 md:p-8">
-            <div className="font-lora text-base md:text-lg leading-relaxed text-slate-300 whitespace-pre-line selection:bg-amber-900 selection:text-amber-100">
+          <div className="flex-1 overflow-y-auto hide-scrollbar p-8 bg-white">
+            <div className="text-lg leading-loose text-justify text-black whitespace-pre-line font-sans">
               {currentFormula.fullText}
             </div>
           </div>

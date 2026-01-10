@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, RotateCcw, Lightbulb, Skull, Flower } from 'lucide-react'; // Added Flower icon
+import { Layers, RotateCcw, Lightbulb, Skull, Flower } from 'lucide-react'; 
 import TwelveAyatana from './components/TwelveAyatana';
 import DuyenKhoiCircle from './components/DuyenKhoiCircle';
 import DeathCountdown from './components/DeathCountdown';
-import MeditationTimer from './components/MeditationTimer'; // Import new component
+import MeditationTimer from './components/MeditationTimer'; 
 
 const DhammaVisualizerV2 = () => {
   const [activeMenu, setActiveMenu] = useState('12xu');
@@ -22,126 +22,78 @@ const DhammaVisualizerV2 = () => {
     localStorage.setItem('dhamma-active-menu', menu);
   };
 
+  // Kindle Style Buttons
+  const getButtonClass = (isActive) => `
+    flex-1 px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm font-bold uppercase tracking-widest border-r border-black last:border-r-0 transition-all flex items-center justify-center gap-2
+    ${isActive 
+      ? 'bg-black text-white' 
+      : 'bg-white text-black hover:bg-gray-100'}
+  `;
+
   return (
-    <div className="flex flex-col bg-slate-50 font-sans text-slate-800 overflow-hidden">
+    <div className="flex flex-col h-screen bg-white  text-black overflow-hidden">
       
       <style>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .resize-handle {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 6px;
-          cursor: col-resize;
-          background: transparent;
-          z-index: 10;
-          transition: background-color 0.2s;
-        }
-        .resize-handle:hover,
-        .resize-handle.active {
-          background: rgba(59, 130, 246, 0.2);
-        }
-        .resize-handle::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 3px;
-          height: 60px;
-          background: #3b82f6;
-          border-radius: 3px;
-          opacity: 0;
-          transition: opacity 0.2s;
-          box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
-        }
-        .resize-handle:hover::after,
-        .resize-handle.active::after {
-          opacity: 1;
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Header with Main Menu Toggle */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex-none shadow-sm z-10">
-        <div className="flex flex-col gap-4 max-w-full mx-auto">
+      {/* Header Kindle Style */}
+      <div className="bg-white border-b-2 border-black px-0 py-0 flex-none z-10">
+        <div className="flex flex-col gap-0 max-w-full mx-auto">
           {/* Main Menu Toggle */}
-          <div className="flex justify-center overflow-x-auto">
-            <div className="flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 p-1 rounded-lg border border-blue-200 shadow-sm shrink-0">
+          <div className="flex justify-center border-b border-black w-full p-3 md:p-4">
+            <div className="flex items-center w-full max-w-4xl mx-auto border-x border-black">
               <button
                 onClick={() => handleMenuChange('12xu')}
-                className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                  activeMenu === '12xu' 
-                    ? 'bg-white text-blue-700 shadow-sm ring-1 ring-blue-300' 
-                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
-                }`}
+                className={getButtonClass(activeMenu === '12xu')}
               >
-                <Layers size={16} />
+                <Layers size={18} />
                 <span className="hidden sm:inline">12 Xứ</span>
-                <span className="sm:hidden">12 Xứ</span>
               </button>
+              
               <button
                 onClick={() => handleMenuChange('12duyen')}
-                className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                  activeMenu === '12duyen' 
-                    ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-indigo-300' 
-                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
-                }`}
+                className={getButtonClass(activeMenu === '12duyen')}
               >
-                <RotateCcw size={16} />
-                <span className="hidden sm:inline">12 Duyên Khởi</span>
-                <span className="sm:hidden">Duyên Khởi</span>
+                <RotateCcw size={18} />
+                <span className="hidden sm:inline">12 Duyên</span>
               </button>
+              
               <button
                 onClick={() => handleMenuChange('death')}
-                className={`px-4 md:px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                  activeMenu === 'death' 
-                    ? 'bg-white text-slate-800 shadow-md ring-2 ring-slate-400' 
-                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
-                }`}
+                className={getButtonClass(activeMenu === 'death')}
               >
                 <Skull size={18} />
-                <span className="hidden sm:inline">Quán Sự Chết</span>
-                <span className="sm:hidden">Sự Chết</span>
+                <span className="hidden sm:inline">Sự Chết</span>
               </button>
+              
               <button
                 onClick={() => handleMenuChange('meditation')}
-                className={`px-4 md:px-6 py-3 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
-                  activeMenu === 'meditation' 
-                    ? 'bg-white text-emerald-800 shadow-md ring-2 ring-emerald-400' 
-                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
-                }`}
+                className={getButtonClass(activeMenu === 'meditation')}
               >
-                <Flower size={18} />
+                <Flower size={18} /> 
                 <span className="hidden sm:inline">Thiền</span>
-                <span className="sm:hidden">Thiền</span>
               </button>
             </div>
           </div>
 
-          {/* Controls based on active menu */}
-          {activeMenu === '12xu' && <TwelveAyatana />}
+          {/* Controls - Minimalist */}
+          {activeMenu === '12xu' && <div className="hidden"></div>}
 
           {activeMenu === '12duyen' && (
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center">
-           
-
-              <div className="flex items-center gap-3 bg-emerald-50 px-4 py-2.5 rounded-lg border-2 border-emerald-200">
-                <Lightbulb size={18} className="text-emerald-600" />
+            <div className="flex flex-row gap-3 items-center justify-center py-2 bg-gray-50 border-b border-black">
+              <div className="flex items-center gap-2 px-3 py-1 bg-white border border-black rounded-sm">
+                <Lightbulb size={16} className="text-black" />
                 <label className="flex items-center gap-2 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={mindfulnessActive}
                     onChange={(e) => setMindfulnessActive(e.target.checked)}
-                    className="w-5 h-5 rounded border-emerald-300 text-emerald-600 focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                    className="w-4 h-4 text-black border-black focus:ring-0 cursor-pointer rounded-none"
                   />
-                  <span className="text-sm font-bold text-emerald-800">
-                    Thiết lập Chánh Niệm (Cắt đứt vòng luân hồi)
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    Chánh Niệm
                   </span>
                 </label>
               </div>
@@ -151,9 +103,11 @@ const DhammaVisualizerV2 = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto hide-scrollbar bg-slate-50 w-full relative">
+      <div className="flex-1 overflow-y-auto hide-scrollbar bg-white w-full relative">
+        {activeMenu === '12xu' && <TwelveAyatana />}
+        
         {activeMenu === '12duyen' && (
-            <div className="w-full h-full p-4 pt-0">
+            <div className="w-full h-full p-2">
               <DuyenKhoiCircle 
                 duyenDirection={duyenDirection}
                 mindfulnessActive={mindfulnessActive}
@@ -167,14 +121,14 @@ const DhammaVisualizerV2 = () => {
             </div>
         )}
 
-                {activeMenu === 'meditation' && (
-                    <div className="w-full h-full p-4 md:p-8">
-                      <MeditationTimer />
-                    </div>
-                )}
-              </div>
+        {activeMenu === 'meditation' && (
+            <div className="w-full h-full p-2 md:p-4">
+              <MeditationTimer />
             </div>
-          );
-        };
-        
-        export default DhammaVisualizerV2;
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DhammaVisualizerV2;
