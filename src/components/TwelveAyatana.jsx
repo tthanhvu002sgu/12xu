@@ -315,8 +315,8 @@ const TwelveAyatana = () => {
   return (
     <>
       {/* Controls in header - Kindle Style Buttons */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center p-4 border-b border-black">
-        <div className="flex items-center overflow-hidden border border-black rounded-sm shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-center p-4 border-b ">
+        <div className="flex items-center overflow-hidden  rounded-sm shadow-sm">
           <button
             onClick={() => setTargetType('internal')}
             className={`px-6 py-2 text-sm font-bold uppercase transition-all ${
@@ -340,7 +340,7 @@ const TwelveAyatana = () => {
           </button>
         </div>
 
-        <div className="flex gap-0 flex-wrap justify-center border border-black rounded-sm overflow-hidden shadow-sm">
+        <div className="flex gap-1 flex-wrap justify-center   rounded-sm overflow-hidden shadow-sm">
           {Object.values(senses).map((s) => (
             <button
               key={s.id}

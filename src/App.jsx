@@ -42,9 +42,10 @@ const DhammaVisualizerV2 = () => {
       <div className="bg-white border-b-2 border-black px-0 py-0 flex-none z-10">
         <div className="flex flex-col gap-0 max-w-full mx-auto">
           {/* Main Menu Toggle */}
-          <div className="flex justify-center border-b border-black w-full p-3 md:p-4">
-            <div className="flex items-center w-full max-w-4xl mx-auto border-x border-black">
+          <div className="flex justify-center border-b w-full p-3 md:p-4">
+            <div className="flex items-center w-full max-w-4xl mx-auto gap-1">
               <button
+                
                 onClick={() => handleMenuChange('12xu')}
                 className={getButtonClass(activeMenu === '12xu')}
               >
@@ -60,13 +61,7 @@ const DhammaVisualizerV2 = () => {
                 <span className="hidden sm:inline">12 Duyên</span>
               </button>
               
-              <button
-                onClick={() => handleMenuChange('death')}
-                className={getButtonClass(activeMenu === 'death')}
-              >
-                <Skull size={18} />
-                <span className="hidden sm:inline">Sự Chết</span>
-              </button>
+             
               
               <button
                 onClick={() => handleMenuChange('meditation')}
@@ -115,12 +110,7 @@ const DhammaVisualizerV2 = () => {
             </div>
         )}
         
-        {activeMenu === 'death' && (
-            <div className="w-full h-full">
-              <DeathCountdown />
-            </div>
-        )}
-
+        
         {activeMenu === 'meditation' && (
             <div className="w-full h-full p-2 md:p-4">
               <MeditationTimer />
